@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">task4_storage</string>
+
+
+    <string name="main_tooltip_setting">@string/setting_screen_title</string>
+    <string name="main_screen_title">Animal list</string>
+
+    <string name="enum_dbms_room">Room</string>
+    <string name="enum_dbms_cursor">Cursor</string>
+
+    <string name="enum_order_by_name">Name</string>
+    <string name="enum_order_by_age">Age</string>
+    <string name="enum_order_by_breed">Breed</string>
+
+    <string name="add_animal_screen_edit_title">Edit animal</string>
+    <string name="add_animal_screen_title">New animal</string>
+    <string name="add_animal_input_label_name">@string/enum_order_by_name</string>
+    <string name="add_animal_input_label_age">@string/enum_order_by_age</string>
+    <string name="add_animal_input_label_breed">@string/enum_order_by_breed</string>
+    <string name="add_animal_button_add">Add</string>
+    <string name="add_animal_button_update">Update</string>
+    <string name="add_animal_toast_saved">Saved</string>
+    <string name="add_animal_toast_not_saved">Not saved</string>
+
+    <string name="error_required_input">*Required</string>
+    <string name="error_age_input">*Invalidate age</string>
+
+    <string name="setting_screen_title">Setting</string>
+
+    <string name="setting_order_enable_title">Enable list ordering</string>
+
+    <string name="setting_list_order_summary">Select the field by which you want to sort the list of animals</string>
+    <string name="setting_list_order_title">Order list by</string>
+
+    <string name="setting_list_dbms_summary">Select the DBMS, by which you want to use</string>
+    <string name="setting_list_dbms_title">Database Management System</string>
+    <string name="setting_list_dbms_restart_hint">Kill the app to apply the changes</string>
+
+</resources>
