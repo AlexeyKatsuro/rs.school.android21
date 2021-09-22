@@ -1,32 +1,36 @@
 package com.alexeykatsuro.tast5_network.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.alexeykatsuro.tast5_network.R
+import com.alexeykatsuro.tast5_network.databinding.MainFragmentBinding
+import com.alexeykatsuro.tast5_network.utils.requireApp
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(R.layout.main_fragment) {
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+    private val viewModel: MainViewModel by viewModels() {
+        requireApp().viewModelFactory
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+    private val viewBinding by viewBinding(MainFragmentBinding::bind)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewBinding.also { ui ->
+            viewModel.result.observe(viewLifecycleOwner) {cats ->
+                ui.message.text = cats.joinToString(separator = "\n") {
+                    it.url.orEmpty()
+                }
+            }
+        }
     }
 
 }
