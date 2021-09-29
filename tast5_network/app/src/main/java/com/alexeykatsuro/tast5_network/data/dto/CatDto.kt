@@ -7,97 +7,97 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CatDto(
     @SerialName("breeds")
-    val breeds: List<Breed>?,
+    val breeds: List<Breed> = emptyList(),
     @SerialName("id")
-    val id: String?,
+    val id: String? = null,
     @SerialName("url")
-    val url: String?,
+    val url: String? = null,
     @SerialName("width")
-    val width: Int?,
+    val width: Int? = null,
     @SerialName("height")
-    val height: Int?
+    val height: Int? = null
 ) {
     @Serializable
     data class Breed(
         @SerialName("weight")
-        val weight: Weight?,
+        val weight: Weight? = null,
         @SerialName("id")
-        val id: String?,
+        val id: String? = null,
         @SerialName("name")
-        val name: String?,
+        val name: String? = null,
         @SerialName("cfa_url")
-        val cfaUrl: String?,
+        val cfaUrl: String? = null,
         @SerialName("vetstreet_url")
-        val vetstreetUrl: String?,
+        val vetstreetUrl: String? = null,
         @SerialName("vcahospitals_url")
-        val vcahospitalsUrl: String?,
+        val vcahospitalsUrl: String? = null,
         @SerialName("temperament")
-        val temperament: String?,
+        val temperament: String? = null,
         @SerialName("origin")
-        val origin: String?,
+        val origin: String? = null,
         @SerialName("country_codes")
-        val countryCodes: String?,
+        val countryCodes: String? = null,
         @SerialName("country_code")
-        val countryCode: String?,
+        val countryCode: String? = null,
         @SerialName("description")
-        val description: String?,
+        val description: String? = null,
         @SerialName("life_span")
-        val lifeSpan: String?,
+        val lifeSpan: String? = null,
         @SerialName("indoor")
-        val indoor: Int?,
+        val indoor: Int? = null,
         @SerialName("alt_names")
-        val altNames: String?,
+        val altNames: String? = null,
         @SerialName("adaptability")
-        val adaptability: Int?,
+        val adaptability: Int? = null,
         @SerialName("affection_level")
-        val affectionLevel: Int?,
+        val affectionLevel: Int? = null,
         @SerialName("child_friendly")
-        val childFriendly: Int?,
+        val childFriendly: Int? = null,
         @SerialName("dog_friendly")
-        val dogFriendly: Int?,
+        val dogFriendly: Int? = null,
         @SerialName("energy_level")
-        val energyLevel: Int?,
+        val energyLevel: Int? = null,
         @SerialName("grooming")
-        val grooming: Int?,
+        val grooming: Int? = null,
         @SerialName("health_issues")
-        val healthIssues: Int?,
+        val healthIssues: Int? = null,
         @SerialName("intelligence")
-        val intelligence: Int?,
+        val intelligence: Int? = null,
         @SerialName("shedding_level")
-        val sheddingLevel: Int?,
+        val sheddingLevel: Int? = null,
         @SerialName("social_needs")
-        val socialNeeds: Int?,
+        val socialNeeds: Int? = null,
         @SerialName("stranger_friendly")
-        val strangerFriendly: Int?,
+        val strangerFriendly: Int? = null,
         @SerialName("vocalisation")
-        val vocalisation: Int?,
+        val vocalisation: Int? = null,
         @SerialName("experimental")
-        val experimental: Int?,
+        val experimental: Int? = null,
         @SerialName("hairless")
-        val hairless: Int?,
+        val hairless: Int? = null,
         @SerialName("natural")
-        val natural: Int?,
+        val natural: Int? = null,
         @SerialName("rare")
-        val rare: Int?,
+        val rare: Int? = null,
         @SerialName("rex")
-        val rex: Int?,
+        val rex: Int? = null,
         @SerialName("suppressed_tail")
-        val suppressedTail: Int?,
+        val suppressedTail: Int? = null,
         @SerialName("short_legs")
-        val shortLegs: Int?,
+        val shortLegs: Int? = null,
         @SerialName("wikipedia_url")
-        val wikipediaUrl: String?,
+        val wikipediaUrl: String? = null,
         @SerialName("hypoallergenic")
-        val hypoallergenic: Int?,
+        val hypoallergenic: Int? = null,
         @SerialName("reference_image_id")
-        val referenceImageId: String?
+        val referenceImageId: String? = null
     ) {
         @Serializable
         data class Weight(
             @SerialName("imperial")
-            val imperial: String?,
+            val imperial: String? = null,
             @SerialName("metric")
-            val metric: String?
+            val metric: String? = null
         )
     }
 }

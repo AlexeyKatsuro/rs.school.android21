@@ -1,22 +1,58 @@
 package com.alexeykatsuro.tast5_network.ui.main
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.alexeykatsuro.tast5_network.data.dto.CatDto
 import com.alexeykatsuro.tast5_network.domain.repository.CatRepository
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val catRepository: CatRepository
 ) : ViewModel() {
-    val result: LiveData<List<CatDto>> = liveData {
-        catRepository.fetchCats(limit = 5, page = 1).onSuccess {
-            emit(it)
-            Log.d("TAG", "$it")
-        }.onFailure {
-            Log.d("TAG", "$it",it)
+
+    private var pageNumber = 1
+    private val _result = Channel<Int>().apply {
+        viewModelScope.launch {
+            send(pageNumber)
         }
     }
+
+    val result: Flow<List<CatDto>> = _result.receiveAsFlow().map { number ->
+        Log.d("TAG", "fetchCats")
+        var list: List<CatDto> = emptyList()
+        catRepository.fetchCats(limit = 10, page = number).fold(
+            onSuccess = {
+                Log.d("TAG", "${it}")
+                list = (it)
+            },
+            onFailure = {
+                Log.d("TAG", it.message, it)
+            }
+        )
+        _isLoading.postValue(false)
+        list
+    }.scan(emptyList<CatDto>(), { accumulator, value ->
+        accumulator + value
+    }).onEach {
+        Log.d("TAG", "onEach ${it}")
+    }
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
+
+    fun loadMore() {
+        Log.d("TAG", "loadMore call")
+        if (_result.trySend(pageNumber).isSuccess) {
+            pageNumber++
+            _isLoading.postValue(true)
+        }
+
+    }
+
 
 }
