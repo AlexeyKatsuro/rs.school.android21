@@ -67,6 +67,7 @@ dependencies {
 
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
     implementation("io.coil-kt:coil:1.3.2")
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.0-beta01")
