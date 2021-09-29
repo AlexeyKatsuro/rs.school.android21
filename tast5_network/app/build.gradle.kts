@@ -32,6 +32,15 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+
+        // Disabling coroutine's ExperimentalCoroutinesApi warning
+        // Disabling serialization's ExperimentalSerializationApi warning
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            "-Xuse-experimental=kotlinx.serialization.ExperimentalSerializationApi",
+            "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xuse-experimental=kotlinx.coroutines.TheAnnotationYouWantToDisable"
+        )
+
     }
     buildFeatures {
         viewBinding = true
