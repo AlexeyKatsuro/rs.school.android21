@@ -1,15 +1,14 @@
 package com.alexeykatsuro.task5_network.ui.main
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.annotation.ExperimentalCoilApi
 import coil.clear
 import coil.load
 import com.alexeykatsuro.task5_network.R
@@ -34,7 +33,7 @@ class MainAdapter(private val host: Fragment, private val callbacks: Callbacks) 
 
     interface Callbacks {
         fun onShareClick(item: CatDto)
-        fun onClick(item: CatDto)
+        fun onClick(imageView: ImageView, item: CatDto)
     }
 
 
@@ -54,8 +53,10 @@ class MainAdapter(private val host: Fragment, private val callbacks: Callbacks) 
         init {
 
             itemBinding.apply {
-                catImage.setOnClickListener {
-                    currentCat?.let(callbacks::onClick)
+                catImage.setOnClickListener { view ->
+                    currentCat?.let { item ->
+                        callbacks.onClick(view as ImageView, item)
+                    }
                 }
                 shareButton.setOnClickListener {
                     currentCat?.let(callbacks::onShareClick)
@@ -68,6 +69,7 @@ class MainAdapter(private val host: Fragment, private val callbacks: Callbacks) 
             currentCat = item
 
             itemBinding.also { ui ->
+                ui.catImage.transitionName = item?.url
                 if (item != null) {
                     ui.catImage.layoutParams.apply {
                         height = item.height ?: height

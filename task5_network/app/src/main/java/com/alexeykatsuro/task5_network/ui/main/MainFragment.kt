@@ -2,9 +2,11 @@ package com.alexeykatsuro.task5_network.ui.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
@@ -37,10 +39,13 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
                     }
 
-                    override fun onClick(item: CatDto) {
+                    override fun onClick(imageView: ImageView, item: CatDto) {
                         val navDestination =
                             MainFragmentDirections.showViewImageFragment(item.url!!)
-                        findNavController().navigate(navDestination)
+                        val extras = FragmentNavigatorExtras(
+                            imageView to item.url
+                        )
+                        findNavController().navigate(navDestination, extras)
                     }
 
                 })

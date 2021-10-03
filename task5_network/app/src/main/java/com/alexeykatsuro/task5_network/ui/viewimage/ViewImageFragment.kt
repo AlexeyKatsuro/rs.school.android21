@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.transition.TransitionInflater
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.alexeykatsuro.task5_network.R
@@ -15,8 +16,15 @@ class ViewImageFragment : Fragment(R.layout.veiw_image_fragment) {
 
     private val args: ViewImageFragmentArgs by navArgs()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewBinding.also { ui ->
+            ui.image.transitionName = args.url
             ui.image.load(args.url)
         }
     }
