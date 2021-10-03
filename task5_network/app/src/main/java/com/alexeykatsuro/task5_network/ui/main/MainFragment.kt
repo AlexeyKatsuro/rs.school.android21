@@ -14,17 +14,18 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.alexeykatsuro.task5_network.R
 import com.alexeykatsuro.task5_network.data.dto.CatDto
 import com.alexeykatsuro.task5_network.databinding.MainFragmentBinding
+import com.alexeykatsuro.task5_network.utils.filterWithPrevious
 import com.alexeykatsuro.task5_network.utils.requireApp
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 
 class MainFragment : Fragment(R.layout.main_fragment) {
 
 
-    private val viewModel: MainViewModel by viewModels() {
+    private val viewModel: MainViewModel by viewModels {
         requireApp().viewModelFactory
     }
 
@@ -72,11 +73,12 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             }
 
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                mainAdapter.loadStateFlow
-                    .distinctUntilChangedBy { it.refresh }
-                    // Only react to cases where REFRESH completes i.e., NotLoading.
-                    .filter { it.refresh is LoadState.NotLoading }
-                    .collect { ui.imageList.scrollToPosition(0) }
+                mainAdapter.loadStateFlow.map { it.refresh }.distinctUntilChanged()
+                    .filterWithPrevious { previous, last ->
+                        previous is LoadState.Loading && last is LoadState.NotLoading
+                    }.collect {
+                        ui.imageList.scrollToPosition(0)
+                    }
             }
         }
     }
