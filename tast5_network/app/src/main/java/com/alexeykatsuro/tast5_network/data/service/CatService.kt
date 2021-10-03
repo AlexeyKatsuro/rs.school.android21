@@ -1,4 +1,4 @@
-package com.alexeykatsuro.tast5_network.domain.service
+package com.alexeykatsuro.tast5_network.data.service
 
 import com.alexeykatsuro.tast5_network.data.dto.CatDto
 import retrofit2.http.GET
@@ -9,5 +9,6 @@ interface CatService {
     suspend fun fetchCats(
         @Query("limit") limit: Int? = null,
         @Query("page") page: Int? = null,
+        @Query("order") order: String? = "asc"
     ): List<CatDto>
 }

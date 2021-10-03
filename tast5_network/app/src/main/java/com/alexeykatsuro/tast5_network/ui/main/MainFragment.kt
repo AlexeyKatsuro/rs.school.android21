@@ -1,27 +1,26 @@
 package com.alexeykatsuro.tast5_network.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.alexeykatsuro.tast5_network.R
 import com.alexeykatsuro.tast5_network.data.dto.CatDto
 import com.alexeykatsuro.tast5_network.databinding.MainFragmentBinding
 import com.alexeykatsuro.tast5_network.utils.requireApp
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 
 
 class MainFragment : Fragment(R.layout.main_fragment) {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
 
     private val viewModel: MainViewModel by viewModels() {
         requireApp().viewModelFactory
@@ -32,51 +31,49 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewBinding.also { ui ->
 
-            val mainAdapter = MainAdapter(viewLifecycleOwner.lifecycleScope, callbacks = object : MainAdapter.Callbacks {
-                override fun onShareClick(item: CatDto) {
-                }
+            val mainAdapter = MainAdapter(host = this,
+                callbacks = object : MainAdapter.Callbacks {
+                    override fun onShareClick(item: CatDto) {
 
-                override fun onClick(item: CatDto) {
-                }
+                    }
 
-            })
+                    override fun onClick(item: CatDto) {
+                        val navDestination =
+                            MainFragmentDirections.showViewImageFragment(item.url!!)
+                        findNavController().navigate(navDestination)
+                    }
 
-            val footerAdapter = LoadingFooterAdapter()
-            val adapter = ConcatAdapter(mainAdapter,footerAdapter)
-            ui.imageList.apply {
-                this.adapter = adapter
-                addOnScrollListener(PagingLoadMoreListener {
-                    viewModel.loadMore()
                 })
+            ui.swipeRefresh.setOnRefreshListener { mainAdapter.refresh() }
+            val footerAdapter = FooterAdapter(onRetryClick = { mainAdapter.retry() })
+            mainAdapter.addLoadStateListener { loadStates ->
+                val state = loadStates.append.takeIf {
+                    it !is LoadState.NotLoading
+                } ?: loadStates.refresh
+                footerAdapter.loadState = state
             }
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.result.collect { images ->
-                    mainAdapter.submitList(images)
+            ui.imageList.adapter = ConcatAdapter(mainAdapter, footerAdapter)
+
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                viewModel.cats.collectLatest {
+                    mainAdapter.submitData(it)
                 }
             }
-            viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                footerAdapter.isLoading = isLoading
+
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                mainAdapter.loadStateFlow.collectLatest { loadStates ->
+                    ui.swipeRefresh.isRefreshing = loadStates.mediator?.refresh is LoadState.Loading
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                mainAdapter.loadStateFlow
+                    .distinctUntilChangedBy { it.refresh }
+                    // Only react to cases where REFRESH completes i.e., NotLoading.
+                    .filter { it.refresh is LoadState.NotLoading }
+                    .collect { ui.imageList.scrollToPosition(0) }
             }
         }
     }
 
-}
-
-class PagingLoadMoreListener(private val onLoadMore: () -> Unit) : RecyclerView.OnScrollListener() {
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        super.onScrolled(recyclerView, dx, dy)
-        (recyclerView.layoutManager as? LinearLayoutManager)?.let { layoutManager ->
-            val visibleItemCount: Int = layoutManager.childCount
-            val totalItemCount: Int = layoutManager.itemCount
-            val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
-            Log.d("TAG", "visibleItemCount: $visibleItemCount")
-            Log.d("TAG", "totalItemCount: $totalItemCount")
-            Log.d("TAG", "firstVisibleItemPosition: $firstVisibleItemPosition")
-            if (totalItemCount - 10 < firstVisibleItemPosition) {
-                Log.d("TAG", "onLoadMore call")
-                onLoadMore()
-            }
-        }
-
-    }
 }

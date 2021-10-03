@@ -9,5 +9,18 @@
         android:id="@+id/mainFragment"
         android:name="com.alexeykatsuro.tast5_network.ui.main.MainFragment"
         android:label="main_fragment"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/main_fragment">
+        <action
+            android:id="@+id/showViewImageFragment"
+            app:destination="@id/viewImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewImageFragment"
+        android:name="com.alexeykatsuro.tast5_network.ui.viewimage.ViewImageFragment"
+        android:label="ViewImageFragment"
+        tools:layout="@layout/veiw_image_fragment">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
 </navigation>

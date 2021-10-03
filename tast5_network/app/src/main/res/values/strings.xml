@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">tast5_network</string>
+    <string name="list_footer_retry">Retry</string>
 </resources>

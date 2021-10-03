@@ -2,7 +2,7 @@ package com.alexeykatsuro.tast5_network
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.alexeykatsuro.tast5_network.domain.repository.CatRepository
+import com.alexeykatsuro.tast5_network.data.repository.CatRepository
 import com.alexeykatsuro.tast5_network.ui.main.MainViewModel
 
 class ViewModelFactory(

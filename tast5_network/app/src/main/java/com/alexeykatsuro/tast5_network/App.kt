@@ -1,10 +1,10 @@
 package com.alexeykatsuro.tast5_network
 
 import android.app.Application
-import com.alexeykatsuro.tast5_network.domain.repository.CatRepository
-import com.alexeykatsuro.tast5_network.domain.service.CatService
+import com.alexeykatsuro.tast5_network.data.repository.CatRepository
+import com.alexeykatsuro.tast5_network.data.service.CatService
+import com.alexeykatsuro.tast5_network.data.service.inerceptor.ApiKeyHeaderInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -22,13 +22,13 @@ class App : Application() {
     private val httpClient: OkHttpClient by lazy {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-
+        val apiKeyHeaderInterceptor = ApiKeyHeaderInterceptor(BuildConfig.CAT_API)
         OkHttpClient.Builder()
             .addInterceptor(logging)
+            .addInterceptor(apiKeyHeaderInterceptor)
             .build()
     }
 
-    @ExperimentalSerializationApi
     private val retrofit: Retrofit by lazy {
 
         val contentType = "application/json".toMediaType()

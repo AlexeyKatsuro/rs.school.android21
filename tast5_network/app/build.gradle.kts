@@ -1,7 +1,10 @@
 plugins {
     id("com.android.application")
-    kotlin("android")
-    kotlin("plugin.serialization") version "1.5.31"
+    id("kotlin-android")
+    id("androidx.navigation.safeargs.kotlin")
+    kotlin("kapt")
+    kotlin("plugin.serialization")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -36,6 +39,7 @@ android {
         // Disabling coroutine's ExperimentalCoroutinesApi warning
         // Disabling serialization's ExperimentalSerializationApi warning
         freeCompilerArgs = freeCompilerArgs + listOf(
+            "-Xuse-experimental=coil.annotation.ExperimentalCoilApi",
             "-Xuse-experimental=kotlinx.serialization.ExperimentalSerializationApi",
             "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-Xuse-experimental=kotlinx.coroutines.TheAnnotationYouWantToDisable"
@@ -52,13 +56,12 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
-    implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.1")
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
-    implementation("androidx.paging:paging-runtime:3.0.1")
-
+    implementation("androidx.paging:paging-runtime-ktx:3.0.1")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
@@ -69,6 +72,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
+    implementation("com.google.android.material:material:1.4.0")
     implementation("io.coil-kt:coil:1.3.2")
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.0-beta01")
 
