@@ -3,6 +3,7 @@ package com.alexeykatsuro.task5_network.ui.viewimage
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -24,8 +25,13 @@ class ViewImageFragment : Fragment(R.layout.veiw_image_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewBinding.also { ui ->
-            ui.image.transitionName = args.url
-            ui.image.load(args.url)
+            ui.backgroundFrame.setOnClickListener {
+                findNavController().navigateUp()
+            }
+            ui.image.apply {
+                transitionName = args.url
+                load(args.url)
+            }
         }
     }
 }

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
     android:background="?android:colorBackground"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:scaleType="fitCenter"
-        tools:src="@drawable/ic_github_logo"
-        android:layout_height="match_parent"/>
+        tools:src="@drawable/ic_github_logo" />
 
 </FrameLayout>
